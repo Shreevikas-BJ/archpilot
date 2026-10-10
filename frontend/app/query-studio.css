@@ -1,0 +1,455 @@
+.brand.brandImage {
+  padding: 0;
+  margin: 0 0 26px;
+  display: block;
+  line-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #263655;
+  background: #031128;
+}
+.brandImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.queryOutput {
+  display: grid;
+  gap: 20px;
+}
+.historyQuery {
+  min-width: 0;
+}
+.queryTree {
+  border-left: 1px solid #3a4b6c;
+  margin: 0 8px 12px 20px;
+  padding: 6px 0 2px 12px;
+  display: grid;
+  gap: 6px;
+}
+.queryTree > span {
+  font-size: 8px;
+  line-height: 1.6;
+  color: #8498b8;
+}
+.queryTree button {
+  background: transparent;
+  border: 0;
+  color: #a5b5cd;
+  font-size: 10px;
+  padding: 5px 0;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.queryTree button.selected {
+  color: #b4c8ff;
+}
+.queryTree button span {
+  font-size: 8px;
+  color: #7b92b7;
+}
+.liveProgress {
+  padding: 25px;
+}
+.progressHeadline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.progressHeadline > div {
+  flex: 1;
+  min-width: 0;
+}
+.progressHeadline h2 {
+  font-size: 19px;
+  margin: 6px 0 0;
+  line-height: 1.35;
+}
+.progressSymbol {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: #eef3ff;
+  border: 1px solid #dce7ff;
+  border-radius: 12px;
+  color: #6382da;
+  flex-shrink: 0;
+}
+.progressExplanation {
+  font-size: 11px;
+  color: #7b8ca4;
+  margin: 17px 0;
+}
+.progressHeadline .elapsed {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.stageTimeline {
+  list-style: none;
+  margin: 21px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+.stageItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  position: relative;
+  min-height: 40px;
+  padding: 9px 10px;
+  margin: 0 !important;
+  border-radius: 6px;
+  color: #9ba7b9;
+}
+.stageItem.current {
+  background: #f0f5ff;
+  color: #3564ce;
+  font-weight: 600;
+}
+.stageItem.done {
+  color: #60768e;
+}
+.stageItem small {
+  margin-left: auto;
+  font-size: 8px;
+  font-weight: 500;
+}
+.stageIndicator {
+  width: 19px;
+  height: 19px;
+  border: 1px solid #d8e1ef;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: white;
+}
+.stageIndicator .icon {
+  width: 12px;
+  height: 12px;
+  color: #448f78;
+}
+.current .stageIndicator {
+  border-color: #84a5f1;
+}
+.current .stageIndicator span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #5d83db;
+  animation: stagePulse 1.6s ease-in-out infinite;
+}
+.done .stageIndicator {
+  background: #edf8f2;
+  border-color: #cce7db;
+}
+.progressTimestamp {
+  font-size: 9px;
+  color: #98a5b8;
+  border-top: 1px solid #e9edf5;
+  margin-top: 19px;
+  padding-top: 13px;
+}
+.queryRecord {
+  padding: 25px;
+}
+.queryRecord > h2 {
+  font-size: 20px;
+  line-height: 1.4;
+  margin: 13px 0 7px;
+  overflow-wrap: anywhere;
+}
+.queryHint {
+  font-size: 11px;
+  color: #8090a8;
+}
+.originalQuery {
+  margin-top: 18px;
+  border: 1px solid #e4eaf5;
+  border-radius: 8px;
+  background: #fbfcff;
+}
+.originalQuery summary {
+  padding: 12px 14px;
+  font-size: 11px;
+  color: #536b90;
+  font-weight: 600;
+  cursor: pointer;
+}
+.originalQuery p {
+  font-size: 12px;
+  white-space: pre-wrap;
+  color: #75869d;
+  line-height: 1.85;
+  padding: 0 14px 14px;
+}
+.queryRounds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 17px 0;
+}
+.queryRounds button {
+  min-width: 100px;
+  text-align: left;
+  padding: 9px 12px;
+  background: #fff;
+  border: 1px solid #e2e8f4;
+  border-radius: 7px;
+  color: #7a8aa4;
+}
+.queryRounds button.selected {
+  border-color: #a1b7ee;
+  background: #f4f7ff;
+  color: #4369ba;
+}
+.queryRounds button span {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+}
+.queryRounds button small {
+  display: block;
+  font-size: 9px;
+  margin-top: 5px;
+}
+.classifiedRequirements {
+  border: 1px solid #e1e8f6;
+  border-radius: 8px;
+  background: #fcfdff;
+  overflow: hidden;
+}
+.classifiedRequirements > summary {
+  padding: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #425e8b;
+  cursor: pointer;
+}
+.classifiedRequirements > summary > span {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+}
+.classifiedRequirements > summary .icon {
+  width: 14px;
+  height: 14px;
+}
+.classifiedRequirements > summary > small {
+  font-size: 8px;
+  font-weight: 400;
+  color: #8d9cb3;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.requirementGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+  margin: 0;
+  padding: 0 15px 15px;
+}
+.requirementGrid > div {
+  background: white;
+  border: 1px solid #e7ecf5;
+  border-radius: 7px;
+  padding: 12px;
+  min-width: 0;
+}
+.requirementGrid dt {
+  font-size: 10px;
+  font-weight: 650;
+  color: #46638c;
+  margin-bottom: 7px;
+}
+.requirementGrid dd {
+  margin: 0;
+  font-size: 11px;
+  color: #7d8da5;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.requirementGrid ul {
+  margin: 0;
+  padding-left: 15px;
+}
+.requirementGrid li + li {
+  margin-top: 4px;
+}
+.classificationPending {
+  font-size: 11px;
+  color: #8b9ab1;
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8faff;
+  border: 1px dashed #dce4f2;
+  border-radius: 7px;
+}
+.clarificationAnswers {
+  margin-top: 13px;
+  background: #fafcff;
+  border: 1px solid #e1e9f5;
+  border-radius: 7px;
+  padding: 13px;
+}
+.clarificationAnswers summary {
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #536c94;
+}
+.clarificationAnswers summary small {
+  font-size: 9px;
+  font-weight: 400;
+  margin-left: 8px;
+}
+.clarificationAnswers dl {
+  margin: 13px 0 0;
+}
+.clarificationAnswers dl > div + div {
+  margin-top: 13px;
+}
+.clarificationAnswers dt {
+  font-size: 11px;
+  color: #5a7195;
+  font-weight: 600;
+}
+.clarificationAnswers dd {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #7589a6;
+  white-space: pre-wrap;
+  line-height: 1.7;
+}
+.queryRecord .errorText {
+  margin-top: 15px;
+}
+.queryRecordFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #e9edf6;
+  margin-top: 17px;
+  padding-top: 13px;
+}
+.queryRecordFooter > span {
+  font-size: 9px;
+  color: #91a0b7;
+}
+.queryRecordFooter .textButton {
+  font-size: 10px;
+}
+.mainContent:focus {
+  outline: none;
+}
+@keyframes stagePulse {
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+@media (max-width: 1200px) {
+  .queryRecord,
+  .liveProgress {
+    padding: 21px;
+  }
+  .requirementGrid {
+    grid-template-columns: 1fr;
+  }
+  .progressHeadline h2 {
+    font-size: 17px;
+  }
+  .progressHeadline {
+    flex-wrap: wrap;
+  }
+  .progressHeadline .elapsed {
+    margin-left: auto;
+  }
+  .queryRecordFooter {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+@media (max-width: 640px) {
+  .brand.brandImage {
+    width: 176px;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 7px;
+  }
+  .sidebar {
+    align-items: center;
+  }
+  .newDesignButton {
+    height: 38px;
+  }
+  .historyQuery {
+    flex: 0 0 205px;
+    width: 205px;
+  }
+  .historyQuery .historyItem {
+    width: 100%;
+    min-height: 75px;
+  }
+  .queryTree {
+    display: none;
+  }
+  .liveProgress,
+  .queryRecord {
+    padding: 20px;
+  }
+  .progressHeadline h2 {
+    font-size: 18px;
+  }
+  .progressHeadline .elapsed {
+    padding: 5px 7px;
+  }
+  .progressSymbol {
+    height: 35px;
+    width: 35px;
+  }
+  .stageItem {
+    font-size: 11px;
+    gap: 8px;
+    padding: 8px 7px;
+  }
+  .stageItem small {
+    font-size: 8px;
+  }
+  .queryRecord > h2 {
+    font-size: 20px;
+  }
+  .queryRecord .savedBadge {
+    font-size: 8px;
+  }
+  .classifiedRequirements > summary > small {
+    display: block;
+    margin: 7px 0 0 17px;
+  }
+  .queryHint {
+    font-size: 11px;
+  }
+  .requirementGrid dd {
+    font-size: 12px;
+  }
+  .queryRecordFooter > span {
+    font-size: 8px;
+  }
+  .queryRecordFooter .textButton {
+    font-size: 10px;
+  }
+  .queryRounds button {
+    min-height: 48px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .current .stageIndicator span {
+    animation: none;
+  }
+}

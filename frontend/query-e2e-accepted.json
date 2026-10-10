@@ -1,0 +1,49 @@
+﻿{
+    "accepted":  {
+                     "elapsedMs":  1208,
+                     "payload":  {
+                                     "created_at":  "2026-09-28T02:39:54.967273Z",
+                                     "problem":  "Build a tiny internal read-only staff directory for five employees on our existing VPN. FastAPI serves HTML and PostgreSQL stores 100 names and work phone numbers. An admin imports CSV monthly. No public access, login UI, integrations, attachments or regulated data. Deploy two containers on our existing Linux host; our VPN and daily host backups handle access control and recovery. Budget: zero incremental hosting cost. One developer, one week. Business-hours availability, one-second latency, 24-hour RPO and one-day RTO. Assume remaining details; no clarification is needed. Keep the design to two or three components, compare three relevant technologies, and use three focused research queries on official FastAPI and PostgreSQL documentation.",
+                                     "query_id":  "00af4ae8-292a-4394-bbe2-935ceacdd129",
+                                     "runs":  [
+                                                  {
+                                                      "created_at":  "2026-09-28T02:39:54.967273Z",
+                                                      "error":  null,
+                                                      "events":  [
+                                                                     {
+                                                                         "at":  "2026-09-28T02:39:54.967273Z",
+                                                                         "stage":  "queued"
+                                                                     }
+                                                                 ],
+                                                      "request":  {
+                                                                      "clarifications":  {
+
+                                                                                         },
+                                                                      "mode":  "cost_effective",
+                                                                      "problem":  "Build a tiny internal read-only staff directory for five employees on our existing VPN. FastAPI serves HTML and PostgreSQL stores 100 names and work phone numbers. An admin imports CSV monthly. No public access, login UI, integrations, attachments or regulated data. Deploy two containers on our existing Linux host; our VPN and daily host backups handle access control and recovery. Budget: zero incremental hosting cost. One developer, one week. Business-hours availability, one-second latency, 24-hour RPO and one-day RTO. Assume remaining details; no clarification is needed. Keep the design to two or three components, compare three relevant technologies, and use three focused research queries on official FastAPI and PostgreSQL documentation."
+                                                                  },
+                                                      "requirements":  null,
+                                                      "response":  null,
+                                                      "run_id":  "17aac42f-6da2-4dbc-8e93-9c34bc28732f",
+                                                      "stage":  "queued",
+                                                      "status":  "queued",
+                                                      "updated_at":  "2026-09-28T02:39:54.967273Z"
+                                                  }
+                                              ],
+                                     "title":  "Build a tiny internal read-only staff directory for five employees on our existing VPN. FastAPI serv",
+                                     "updated_at":  "2026-09-28T02:39:54.967273Z"
+                                 },
+                     "request":  {
+                                     "clarifications":  {
+
+                                                        },
+                                     "mode":  "cost_effective",
+                                     "problem":  "Build a tiny internal read-only staff directory for five employees on our existing VPN. FastAPI serves HTML and PostgreSQL stores 100 names and work phone numbers. An admin imports CSV monthly. No public access, login UI, integrations, attachments or regulated data. Deploy two containers on our existing Linux host; our VPN and daily host backups handle access control and recovery. Budget: zero incremental hosting cost. One developer, one week. Business-hours availability, one-second latency, 24-hour RPO and one-day RTO. Assume remaining details; no clarification is needed. Keep the design to two or three components, compare three relevant technologies, and use three focused research queries on official FastAPI and PostgreSQL documentation."
+                                 },
+                     "status":  202
+                 },
+    "polls":  [
+
+              ],
+    "startedAt":  1790563193839
+}

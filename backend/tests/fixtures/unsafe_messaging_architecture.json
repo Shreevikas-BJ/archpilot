@@ -1,0 +1,45 @@
+{
+  "user_request": {
+    "problem": "Design multi-region private chat with conversation ordering, durable message history, offline device synchronization, duplicate-safe retries, durable acceptance acknowledgements, WebSocket routing, fenced regional failover, client-side E2EE and large encrypted attachments. An acknowledged user message must survive any component or regional disappearance.",
+    "mode": "balanced",
+    "clarifications": {}
+  },
+  "requirements": {
+    "problem_summary": "Multi-region private user messaging with media",
+    "business_goal": "Durable, ordered, encrypted conversations",
+    "users_and_scale": "One million users, multiple devices and two regions",
+    "latency_expectation": "Accept cross-region durability latency",
+    "data_characteristics": "Chat messages, offline history and large attachments",
+    "security_and_compliance": "Client-side E2EE; servers must not hold plaintext or content keys",
+    "hard_constraints": ["No loss of acknowledged messages on component or regional failure"]
+  },
+  "architecture": {
+    "title": "Intentionally unsafe messaging evaluation fixture",
+    "mode": "balanced",
+    "summary": "This proposed design uses popular products but assigns unsafe responsibilities. Evaluate it as specified; do not assume missing safeguards.",
+    "components": [
+      {"id":"client","name":"Clients","technology":"Mobile and web","category":"connection","purpose":"Send plaintext and receive server-encrypted messages. Device keys exist only on one device and have no recovery.","deployment":"User devices"},
+      {"id":"gateway","name":"Gateway","technology":"FastAPI WebSockets","category":"connection","purpose":"ACK as sent immediately after Redis SET. Proxy all 1 GB uploads and wrap content keys in server KMS. Use load balancer stickiness to find recipient sockets.","deployment":"Two active regions accept every conversation concurrently; wall-clock timestamps define order."},
+      {"id":"redis","name":"Redis","technology":"Redis","category":"durable_data","purpose":"Authoritative messages, idempotency keys, sequence numbers, per-device offline cursors and presence, all with a 24-hour TTL.","deployment":"One in-memory instance per region; no persistence or replication."},
+      {"id":"kafka","name":"Kafka","technology":"Kafka","category":"durable_data","purpose":"Permanent message database and offline history API; partition randomly. Application dual-writes Redis and Kafka with no recovery mechanism.","deployment":"Single broker, retention seven days; consumers may drop duplicates using the Redis TTL key."},
+      {"id":"history","name":"History store","technology":"ScyllaDB","category":"durable_data","purpose":"An optional asynchronously updated cache of recent messages, not required for ACK.","deployment":"RF=1, write CL=ONE, periodic commit log sync; remote region replication asynchronous. Backups once a day."},
+      {"id":"owners","name":"Ownership","technology":"Regional metadata service","category":"control","purpose":"Both regions independently own the same conversation. Last-writer-wins timestamps resolve conflicts; immediately fail over regardless of replication lag.","deployment":"No consensus, leases, epochs or fencing. Claim zero RPO from asynchronous copies."},
+      {"id":"media","name":"Media","technology":"Object storage","category":"media","purpose":"Receive plaintext proxied by the app; use server-side encryption as E2EE. ACK references before upload finalization.","deployment":"One region with no independent copies; app server owns unwrapped attachment keys."}
+    ],
+    "connections": [
+      {"source":"client","target":"gateway","label":"Plaintext and proxied media"},
+      {"source":"gateway","target":"redis","label":"SET then user-visible sent ACK"},
+      {"source":"gateway","target":"kafka","label":"Best-effort random partition append"},
+      {"source":"kafka","target":"history","label":"Async optional materialization"},
+      {"source":"gateway","target":"owners","label":"Unfenced regional writes"},
+      {"source":"gateway","target":"media","label":"Proxy large uploads; server wraps keys"}
+    ],
+    "estimated_monthly_cost":"Not relevant to this correctness fixture",
+    "assumptions":["Product names alone guarantee durability and encryption."],
+    "tradeoffs":["If Redis disappears, every acknowledged but unpublished message disappears. Kafka expiry removes permanent history. Region loss can lose acknowledged messages and keys."],
+    "implementation_steps":["On reconnect, read the Redis cursor. After 24 hours discard missing history without informing the user. Retry duplicate sends as new messages when dedup keys expire."],
+    "source_urls":[]
+  },
+  "evaluation": {"industry_baseline":"The fixture intentionally misuses the selected products.","candidates":[],"key_tradeoffs":[]},
+  "evidence": []
+}

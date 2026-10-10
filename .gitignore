@@ -1,0 +1,17 @@
+.env
+.env.local
+.env.*.local
+.venv/
+__pycache__/
+.pytest_cache/
+.pytest-temp-*/
+.ruff_cache/
+*.pyc
+*.egg-info/
+node_modules/
+.next/
+.DS_Store
+*.tsbuildinfo
+.demo/
+*.log
+backend/live-verification-result.json
