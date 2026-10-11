@@ -55,6 +55,21 @@ def test_settings_repr_hides_database_url():
     assert "database_url=" not in repr(settings)
 
 
+def test_public_runtime_contains_only_safe_display_metadata():
+    settings = Settings(
+        deployment_mode="cloud",
+        deployment_label="AWS ECS us-west-2",
+        llm_display_name="Private Bonsai endpoint",
+    )
+    assert settings.public_runtime == {
+        "mode": "cloud",
+        "label": "AWS ECS us-west-2",
+        "llm": "Private Bonsai endpoint",
+    }
+    assert "database_url" not in settings.public_runtime
+    assert "llm_base_url" not in settings.public_runtime
+
+
 def test_target_logs_safe_fields_and_environment_override(monkeypatch, caplog):
     monkeypatch.setenv("DATABASE_URL", db_session.settings.database_url)
     with caplog.at_level(logging.INFO, logger="uvicorn.error"):

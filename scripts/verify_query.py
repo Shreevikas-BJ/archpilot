@@ -22,7 +22,8 @@ def get_json(path: str):
 
 
 async def verify(query_id: str, accepted_path: Path | None) -> dict:
-    assert get_json("/api/health") == {"status": "ok", "database": "ok"}
+    health = get_json("/api/health")
+    assert health.get("status") == "ok" and health.get("database") == "ok"
     query = QueryDetail.model_validate(get_json("/api/queries/" + query_id))
     latest = query.runs[-1]
     assert latest.status == "complete", f"Latest round is {latest.status}: {latest.stage}"

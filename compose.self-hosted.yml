@@ -1,0 +1,38 @@
+name: archpilot-self-hosted
+
+services:
+  backend:
+    image: ${ARCHPILOT_BACKEND_IMAGE:-archpilot-backend:local}
+    build:
+      context: ./backend
+    env_file:
+      - .env.self-hosted
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+    networks:
+      - private
+      - default
+
+  frontend:
+    image: ${ARCHPILOT_FRONTEND_IMAGE:-archpilot-frontend:local}
+    build:
+      context: ./frontend
+    environment:
+      BACKEND_API_URL: http://backend:8000
+      ARCHPILOT_PROXY_TOKEN: ${ARCHPILOT_PROXY_TOKEN:-}
+      BACKEND_TIMEOUT_SECONDS: ${BACKEND_TIMEOUT_SECONDS:-3600}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_BIND_ADDRESS:-0.0.0.0}:${FRONTEND_PORT:-3000}:3000"
+    networks:
+      - private
+
+networks:
+  private:
+    driver: bridge
+  default:
+    driver: bridge

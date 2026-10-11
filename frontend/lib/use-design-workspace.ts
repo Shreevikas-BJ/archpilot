@@ -9,7 +9,12 @@ import {
 } from "react";
 import { getQueries, getQuery, startDesignQuery } from "./api";
 import { isActive } from "./progress";
-import type { ArchitectureMode, DesignQuery, QuerySummary } from "./types";
+import type {
+  ArchitectureMode,
+  DesignQuery,
+  QuerySummary,
+  RuntimeMetadata,
+} from "./types";
 
 function address(queryId?: string, replace = false) {
   const url = queryId ? "/?query=" + encodeURIComponent(queryId) : "/";
@@ -28,6 +33,7 @@ export function useDesignWorkspace() {
   const [queries, setQueries] = useState<QuerySummary[]>([]);
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
   const [connected, setConnected] = useState<boolean | null>(null);
+  const [runtime, setRuntime] = useState<RuntimeMetadata | null>(null);
   const [historyError, setHistoryError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [opening, setOpening] = useState(false);
@@ -108,9 +114,18 @@ export function useDesignWorkspace() {
           cache: "no-store",
           signal: controller.signal,
         });
-        if (!controller.signal.aborted) setConnected(response.ok);
+        const payload = response.ok
+          ? ((await response.json()) as { runtime?: RuntimeMetadata })
+          : null;
+        if (!controller.signal.aborted) {
+          setConnected(response.ok);
+          setRuntime(payload?.runtime ?? null);
+        }
       } catch {
-        if (!controller.signal.aborted) setConnected(false);
+        if (!controller.signal.aborted) {
+          setConnected(false);
+          setRuntime(null);
+        }
       }
     }
     void health();
@@ -218,6 +233,7 @@ export function useDesignWorkspace() {
     selected,
     setSelectedRunId,
     connected,
+    runtime,
     historyError,
     loading,
     submitting,

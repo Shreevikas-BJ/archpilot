@@ -1,6 +1,12 @@
 export type ArchitectureMode =
   "cost_effective" | "balanced" | "high_performance";
 
+export interface RuntimeMetadata {
+  mode: "local" | "self_hosted" | "cloud";
+  label: string;
+  llm: string;
+}
+
 export interface RequirementsAnalysis {
   problem_summary: string;
   business_goal: string;

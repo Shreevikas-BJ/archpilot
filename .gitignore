@@ -1,4 +1,5 @@
 .env
+.env.self-hosted
 .env.local
 .env.*.local
 .venv/

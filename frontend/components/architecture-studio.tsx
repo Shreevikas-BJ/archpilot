@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import type { ArchitectureMode } from "@/lib/types";
+import type { ArchitectureMode, RuntimeMetadata } from "@/lib/types";
 import { useDesignWorkspace } from "@/lib/use-design-workspace";
 import { STAGE_LABELS } from "@/lib/progress";
 import { ArchitectureResult } from "./architecture-result";
@@ -32,7 +32,7 @@ const MODES: { value: ArchitectureMode; label: string; description: string }[] =
 const DEMO_BRIEF =
   "Build a tiny internal read-only staff directory for five employees on our existing VPN. FastAPI serves HTML and PostgreSQL stores 100 names and work phone numbers. An admin imports CSV monthly. No public access, login UI, integrations, attachments or regulated data. Deploy two containers on our existing Linux host; our VPN and daily host backups handle access control and recovery. Budget: zero incremental hosting cost. One developer, one week. Business-hours availability, one-second latency, 24-hour RPO and one-day RTO. Assume remaining details; no clarification is needed. Keep the design to two or three components, compare three relevant technologies, and use three focused research queries on official FastAPI and PostgreSQL documentation.";
 
-function EmptyResult() {
+function EmptyResult({ runtime }: { runtime: RuntimeMetadata | null }) {
   return (
     <section className="panel emptyResult">
       <div className="emptyHeader">
@@ -89,8 +89,11 @@ function EmptyResult() {
         </div>
       </div>
       <div className="emptyFooter">
-        <span className="statusDot" /> Local inference. Real research. Saved
-        designs.
+        <span className="statusDot" />
+        {runtime?.mode === "local"
+          ? "Local inference"
+          : runtime?.label || "Private compute"}
+        . Real research. Saved designs.
       </div>
     </section>
   );
@@ -110,6 +113,7 @@ export function ArchitectureStudio() {
     selected,
     setSelectedRunId,
     connected,
+    runtime,
     historyError,
     loading,
     submitting,
@@ -249,10 +253,16 @@ export function ArchitectureStudio() {
             <Icon name="spark" />
           </span>
           <div>
-            <strong>Powered locally</strong>
-            <span>Bonsai 2 · 27B</span>
+            <strong>{runtime?.label ?? "Your compute"}</strong>
+            <span>{runtime?.llm ?? "Configured model endpoint"}</span>
           </div>
-          <span className="localBadge">LOCAL</span>
+          <span className="localBadge">
+            {runtime?.mode === "cloud"
+              ? "CLOUD"
+              : runtime?.mode === "self_hosted"
+                ? "PRIVATE"
+                : "LOCAL"}
+          </span>
         </div>
       </aside>
       <main className="mainContent" id="workspace" tabIndex={-1}>
@@ -271,7 +281,9 @@ export function ArchitectureStudio() {
             {connected === null
               ? "Checking connection"
               : connected
-                ? "Backend & database connected"
+                ? runtime
+                  ? `Connected · ${runtime.label}`
+                  : "Backend & database connected"
                 : "Backend unavailable"}
           </span>
         </div>
@@ -438,7 +450,7 @@ export function ArchitectureStudio() {
                 </p>
               </section>
             )}
-            {!query && !opening && <EmptyResult />}
+            {!query && !opening && <EmptyResult runtime={runtime} />}
             {opening && !query && (
               <section className="panel clarificationPanel">
                 <p role="status">Opening your saved query…</p>

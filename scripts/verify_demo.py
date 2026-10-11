@@ -22,7 +22,9 @@ def get_json(path: str):
 
 async def verify(capture_path: Path | None) -> dict:
     health = get_json("/api/health")
-    assert health == {"status": "ok", "database": "ok"}, "Frontend/API/database health failed"
+    assert health.get("status") == "ok" and health.get("database") == "ok", (
+        "Frontend/API/database health failed"
+    )
     history = get_json("/api/architect")
     capture = None
     if capture_path:

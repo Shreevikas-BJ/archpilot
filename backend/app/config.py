@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     app_name: str = "ArchPilot API"
     environment: Literal["development", "test", "production"] = "development"
     api_prefix: str = "/v1"
+    deployment_mode: Literal["local", "self_hosted", "cloud"] = "local"
+    deployment_label: str = Field(default="Local compute", min_length=1, max_length=80)
+    llm_display_name: str = Field(default="Bonsai 2 · 27B", min_length=1, max_length=80)
 
     # Required configuration: never silently fall back to another server or password.
     database_url: str = Field(repr=False)
@@ -44,6 +47,14 @@ class Settings(BaseSettings):
                 "DATABASE_URL must be a postgresql+asyncpg URL with a host, "
                 "database, username, and valid port"
             )
+        return value
+
+    @field_validator("deployment_label", "llm_display_name")
+    @classmethod
+    def validate_display_label(cls, value: str) -> str:
+        value = value.strip()
+        if not value or any(character in value for character in "\r\n\t"):
+            raise ValueError("display labels must be non-empty single-line values")
         return value
 
     llm_provider: Literal["ollama", "openai_compatible"] = "openai_compatible"
@@ -71,6 +82,14 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @property
+    def public_runtime(self) -> dict[str, str]:
+        return {
+            "mode": self.deployment_mode,
+            "label": self.deployment_label,
+            "llm": self.llm_display_name,
+        }
 
 
 @lru_cache

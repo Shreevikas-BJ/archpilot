@@ -1,6 +1,6 @@
 # ArchPilot
 
-Evidence-driven local multi-agent architecture decision engine.
+Evidence-driven multi-agent architecture decision engine for local or private cloud compute.
 
 **Demo:** see [DEMO.md](DEMO.md) for the one-command local startup and presentation walkthrough.
 
@@ -153,9 +153,19 @@ After startup, check the API and database together in another PowerShell window:
 Invoke-RestMethod http://127.0.0.1:8000/v1/health
 ```
 
-Success returns `{"status":"ok","database":"ok"}`. This endpoint executes
-`SELECT 1` with a five-second timeout and returns HTTP `503` if the database
-cannot be reached; it does not expose connection errors or credentials.
+Success returns `status`, `database`, and safe runtime display metadata. This
+endpoint executes `SELECT 1` with a five-second timeout and returns HTTP `503`
+if the database cannot be reached; it does not expose endpoints, connection
+errors, or credentials.
+
+Validate all external integrations before a new deployment:
+
+```powershell
+.\.venv\Scripts\python.exe -m app.preflight
+```
+
+The preflight checks PostgreSQL, the configured OpenAI-compatible model API,
+and SearXNG without printing secret values or endpoint URLs.
 
 Useful infrastructure checks (from the project root):
 
@@ -224,6 +234,18 @@ Do not expose your raw LLM endpoint publicly. Vercel talks to FastAPI; FastAPI t
 
 See [VERCEL_GPU_DEMO.md](VERCEL_GPU_DEMO.md) for the one-command Windows bridge,
 Vercel variables, security boundary, and temporary-tunnel lifecycle.
+
+## Bring your own compute and services
+
+ArchPilot also ships standard backend and frontend Docker images plus a
+self-hosted Compose profile. It can use PostgreSQL, SearXNG, and any
+OpenAI-compatible model endpoint on AWS, another cloud, an on-premises cluster,
+or a local machine. The UI reports the configured compute profile without
+exposing endpoint URLs or credentials.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the integration contract, preflight
+validation, Docker commands, AWS reference architecture, Kubernetes guidance,
+network boundaries, and current scaling limit.
 
 ## Production follow-ups
 

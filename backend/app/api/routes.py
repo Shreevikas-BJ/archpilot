@@ -26,13 +26,20 @@ router = APIRouter()
 
 
 @router.get("/health")
-async def health(session: Annotated[AsyncSession, Depends(get_session)]) -> dict[str, str]:
+async def health(
+    session: Annotated[AsyncSession, Depends(get_session)],
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> dict[str, object]:
     try:
         async with asyncio.timeout(5):
             await session.execute(text("SELECT 1"))
     except (SQLAlchemyError, OSError, TimeoutError):
         raise HTTPException(status_code=503, detail="Database unavailable") from None
-    return {"status": "ok", "database": "ok"}
+    return {
+        "status": "ok",
+        "database": "ok",
+        "runtime": settings.public_runtime,
+    }
 
 
 @router.get("/architectures", response_model=list[ArchitectureRunSummary])

@@ -28,7 +28,15 @@ def test_health_checks_database(health_client):
     client, session = health_client
     response = client.get("/v1/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "database": "ok"}
+    assert response.json() == {
+        "status": "ok",
+        "database": "ok",
+        "runtime": {
+            "mode": "local",
+            "label": "Local compute",
+            "llm": "Bonsai 2 · 27B",
+        },
+    }
     session.execute.assert_awaited_once()
 
 
