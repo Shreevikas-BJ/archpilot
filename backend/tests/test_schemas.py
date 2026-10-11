@@ -1,7 +1,12 @@
 import pytest
 from pydantic import ValidationError
 
-from app.schemas import ArchitectureComponent, ArchitectureConnection, ArchitecturePlan, ResearchPlan
+from app.schemas import (
+    ArchitectureComponent,
+    ArchitectureConnection,
+    ArchitecturePlan,
+    ResearchPlan,
+)
 
 
 def test_research_queries_are_deduplicated() -> None:

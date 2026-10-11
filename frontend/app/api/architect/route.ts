@@ -1,5 +1,8 @@
 import { request as requestBackend } from "undici";
-import { proxyBackendRead } from "../../../lib/backend-proxy";
+import {
+  backendRequestHeaders,
+  proxyBackendRead,
+} from "../../../lib/backend-proxy";
 
 export const runtime = "nodejs";
 
@@ -38,7 +41,7 @@ export async function POST(request: Request) {
       `${backendUrl.replace(/\/$/, "")}/v1/architectures`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: backendRequestHeaders(true),
         body,
         headersTimeout: timeoutMs,
         bodyTimeout: timeoutMs,

@@ -24,7 +24,9 @@ class SearxNGSearchService:
         timeout = httpx.Timeout(self._settings.search_timeout_seconds)
         try:
             async with httpx.AsyncClient(timeout=timeout) as client:
-                response = await client.get(f"{self._settings.searxng_url.rstrip('/')}/search", params=params)
+                response = await client.get(
+                    f"{self._settings.searxng_url.rstrip('/')}/search", params=params
+                )
                 response.raise_for_status()
         except httpx.HTTPError as exc:
             raise SearchServiceError(f"SearXNG request failed: {exc}") from exc

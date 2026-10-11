@@ -64,6 +64,9 @@ class Settings(BaseSettings):
     search_timeout_seconds: float = Field(default=15.0, gt=0, le=60)
 
     cors_origins: str = "http://localhost:3000"
+    # Optional shared secret for a public frontend-to-backend tunnel. When set,
+    # every /v1 request must include it in X-ArchPilot-Proxy-Token.
+    archpilot_proxy_token: str | None = Field(default=None, repr=False)
 
     @property
     def cors_origin_list(self) -> list[str]:

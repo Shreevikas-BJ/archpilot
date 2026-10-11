@@ -8,6 +8,7 @@ import { GET as getHealth } from "../app/api/health/route";
 const originalDispatcher = getGlobalDispatcher();
 const originalUrl = process.env.BACKEND_API_URL;
 const originalTimeout = process.env.BACKEND_TIMEOUT_SECONDS;
+const originalProxyToken = process.env.ARCHPILOT_PROXY_TOKEN;
 let backend: MockAgent;
 
 beforeEach(() => {
@@ -15,6 +16,7 @@ beforeEach(() => {
   backend.disableNetConnect();
   setGlobalDispatcher(backend);
   process.env.BACKEND_API_URL = "http://backend.test/";
+  process.env.ARCHPILOT_PROXY_TOKEN = "demo-secret";
   delete process.env.BACKEND_TIMEOUT_SECONDS;
 });
 
@@ -25,6 +27,9 @@ afterEach(async () => {
   else process.env.BACKEND_API_URL = originalUrl;
   if (originalTimeout === undefined) delete process.env.BACKEND_TIMEOUT_SECONDS;
   else process.env.BACKEND_TIMEOUT_SECONDS = originalTimeout;
+  if (originalProxyToken === undefined)
+    delete process.env.ARCHPILOT_PROXY_TOKEN;
+  else process.env.ARCHPILOT_PROXY_TOKEN = originalProxyToken;
 });
 
 function request(
@@ -53,6 +58,7 @@ test("forwards the request and response with a timeout long enough for local gen
       path: "/v1/architectures",
       method: "POST",
       body: payload,
+      headers: { "x-archpilot-proxy-token": "demo-secret" },
     })
     .reply(200, output, { headers: { "content-type": "application/json" } });
 
@@ -114,7 +120,11 @@ test("loads recent saved designs without caching", async () => {
   const output = [{ run_id: "demo", title: "Directory" }];
   backend
     .get("http://backend.test")
-    .intercept({ path: "/v1/architectures?limit=20", method: "GET" })
+    .intercept({
+      path: "/v1/architectures?limit=20",
+      method: "GET",
+      headers: { "x-archpilot-proxy-token": "demo-secret" },
+    })
     .reply(200, output);
   const response = await GET(new Request("http://frontend.test/api/architect"));
   assert.equal(response.status, 200);

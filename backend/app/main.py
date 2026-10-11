@@ -9,6 +9,7 @@ from app.config import get_settings
 from app.db.base import Base
 from app.db.queries import import_legacy_runs, mark_interrupted_runs
 from app.db.session import SessionFactory, engine, log_database_target, logger
+from app.proxy_auth import ProxyTokenMiddleware
 from app.services.design_jobs import DesignJobs
 
 settings = get_settings()
@@ -33,6 +34,11 @@ async def lifespan(application: FastAPI):
 
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
+app.add_middleware(
+    ProxyTokenMiddleware,
+    token=settings.archpilot_proxy_token,
+    api_prefix=settings.api_prefix,
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origin_list,

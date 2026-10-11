@@ -1,6 +1,14 @@
 import { request as requestBackend } from "undici";
 
 // Only imported by server routes; the browser never receives backend credentials.
+export function backendRequestHeaders(includeJson = false) {
+  const headers: Record<string, string> = {};
+  if (includeJson) headers["Content-Type"] = "application/json";
+  const proxyToken = process.env.ARCHPILOT_PROXY_TOKEN;
+  if (proxyToken) headers["X-ArchPilot-Proxy-Token"] = proxyToken;
+  return headers;
+}
+
 export async function proxyBackendRead(request: Request, path: string) {
   return proxyBackendRequest(request, path, "GET");
 }
@@ -28,9 +36,9 @@ async function proxyBackendRequest(
         ...(method === "POST"
           ? {
               body: await request.text(),
-              headers: { "Content-Type": "application/json" },
+              headers: backendRequestHeaders(true),
             }
-          : {}),
+          : { headers: backendRequestHeaders() }),
         headersTimeout: 10_000,
         bodyTimeout: 10_000,
         signal: AbortSignal.any([request.signal, AbortSignal.timeout(10_000)]),

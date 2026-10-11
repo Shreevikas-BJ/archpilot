@@ -217,9 +217,13 @@ Deploy only `frontend/` to Vercel. The local FastAPI backend must be reachable f
 
 ```env
 BACKEND_API_URL=https://your-backend-host.example
+ARCHPILOT_PROXY_TOKEN=use-the-same-random-server-only-secret-as-fastapi
 ```
 
-Do not expose your raw LLM endpoint publicly. Vercel talks to FastAPI; FastAPI talks to the local LLM.
+Do not expose your raw LLM endpoint publicly. Vercel talks to FastAPI; FastAPI talks to the local LLM. The token is optional for loopback-only development and required for the public tunnel used by the demo.
+
+See [VERCEL_GPU_DEMO.md](VERCEL_GPU_DEMO.md) for the one-command Windows bridge,
+Vercel variables, security boundary, and temporary-tunnel lifecycle.
 
 ## Production follow-ups
 

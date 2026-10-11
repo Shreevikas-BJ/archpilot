@@ -16,7 +16,7 @@ import time
 from pathlib import Path
 from urllib.error import URLError
 from urllib.parse import urlparse
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 BACKEND = ROOT / "backend"
@@ -27,7 +27,12 @@ HIDDEN = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
 
 def healthy(url: str, *, database: bool = False) -> bool:
     try:
-        with urlopen(url, timeout=3) as response:
+        token = os.environ.get("ARCHPILOT_PROXY_TOKEN")
+        request = Request(
+            url,
+            headers={"X-ArchPilot-Proxy-Token": token} if token else {},
+        )
+        with urlopen(request, timeout=3) as response:
             data = json.load(response)
         return data.get("status") == "ok" and (
             not database or data.get("database") == "ok"
